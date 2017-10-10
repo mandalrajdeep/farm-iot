@@ -8,8 +8,11 @@ This is an assignment for an interview: a web application for creating a dashboa
 * [Node.js and NPM](https://nodejs.org/en/)
 * [MySQL](https://dev.mysql.com/downloads/installer/)
 
-## Quick setup
-1. `npm install` to install the necessary packages.
-2. Update config/database.js with your MySQL database information and uncomment the line in the [.gitignore](../blob/master/.gitignore) to ignore the updated config file.
-3. `node scripts/dbsetup.js` to set up your database, if it doesn't already exist.
-4. `npm start` to start up your app! Go to [http://localhost:3000](http://localhost:3000) to see it.
+## Quick Setup
+1. Git clone and enter directory
+2. `npm install` to install the necessary packages.
+3. `bower install` to install the necessary packages.
+4. Update config/database.js with your MySQL database information and uncomment the line in the [.gitignore](../blob/master/.gitignore) to ignore the updated config file.
+5. `node scripts/dbsetup.js` to set up your database, if it doesn't already exist.
+6. (Optional) To insert some test data in the database, you can run the contents of the file 'sensors_2017-10-10.sql' using the command mysql -u root -p <database_name> <database_dump_file.sql>
+7. `npm start` to start up your app! Go to [http://localhost:3000](http://localhost:3000) to see it.
