@@ -81,13 +81,13 @@ function flipSensor(id, attrs, callback) {
       id: id,
       active: !attrs.active
     };
-    console.log('UPDATE sensors.sensor SET active = '+switchSensor.active+' WHERE id = '+switchSensor.id);
+    //console.log('UPDATE sensors.sensor SET active = '+switchSensor.active+' WHERE id = '+switchSensor.id);
   db.query('UPDATE sensors.sensor SET active = ? WHERE id = ?',
     [switchSensor.active, switchSensor.id], function(err, rawMessage) {
         if (err) {
             return handleError(err, callback);
         }
-        console.log(rawMessage);
+        //console.log(rawMessage);
         callback(null, rawMessage);
     });
   }
