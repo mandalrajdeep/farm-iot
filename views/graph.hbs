@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Profile</title>
+    {{> head}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js"></script>
+
+
+  </head>
+  <body value="{{json read_list}}" >
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+        <a class="navbar-brand">Application</a>
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+          <li class="nav-item ">
+            <a class="nav-link" href="/profile">Home </a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="/graph">Graph<span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/settings">Settings</a>
+          </li>
+        </ul>
+        <a href="/logout" class="btn btn-outline-success my-2 my-sm-0">Logout</a>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="page-header text-center">
+        <h1>Moisture Plot</h1>
+      </div>
+
+
+      <div class="container">
+        <div>
+            <div class="row">
+                <label class="col-sm-4" ></label>
+                <select class="col-sm-4 graphSensor" id="graphPeriod" onChange="processGraph(this)">
+                  <option id="allSensor" value="{{json read_list}}" >All Sensors</option>
+                  {{#each read_list}}
+                  <option id="{{@key}}" value="{{json this}}"> Sensor {{farmCount}}</button>
+                  {{/each}}
+                </select>
+                <!--select class="col-sm-4 graphPeriod" id="graphPeriod">
+                  <option value="7">1 Day</option>
+                  <option value="7">1 Week</option>
+                  <option value="30">1 Month</option>
+                  <option value="90">3 Months</option>
+                  <option value="360" default>1 Year</option>
+                </select-->
+            </div>
+        <div>
+          <canvas id="mositurePlot"></canvas>
+        </div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript">
+    var dataset = {
+      data : [],
+      label: '',
+      borderColor : '',
+      fill: false
+    };
+    var chartData = {
+      type: 'line',
+      data: {
+        labels : [], 
+        datasets : [],
+      },
+      options: {
+        title: {
+          display:true,
+        },
+        scales: {
+                yAxes : [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Moisture',
+                            fontStyle: 'bold'
+                        },
+                    ticks : {
+                        max : 0,    
+                        min : 100
+                    }
+                }],
+                xAxes: [{
+                          display: true,
+                          scaleLabel: {
+                              display: true,
+                              labelString: 'Time Scale',
+                              fontStyle: 'bold'
+                          },
+                       ticks: {
+                              autoSkip: true,
+                              maxTicksLimit: 10,
+                              stepSize: .5
+                          },
+                        }],
+            }
+      }
+    };
+    function flushChartData(){
+      dataset.data = [];
+      chartData.data.labels = [];
+      chartData.data.datasets = [];
+      queryResult =[];
+    }
+    function getRandomColor() {
+      var letters = '0123456789ABCDEF';
+      var color = '#';
+      for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    }
+
+    function plotGraph() {
+      var ctx = document.getElementById('mositurePlot').getContext('2d');
+      var moisturePlot = new Chart(ctx, chartData);
+    }
+
+    function graphData(id) {
+      var plotData = JSON.parse($('.graphSensor').val().trim());
+      if (id !="allSensor") {
+        var newDates = [];
+        for (vals in plotData.xs) {
+          newDates.push(Date(plotData.xs[vals]));
+        }
+        chartData.data.labels = newDates;
+        dataset.data = plotData.ys;
+        dataset.label = 'Sensor ' + plotData.farmCount;
+        dataset.borderColor = getRandomColor();
+        chartData.data.datasets.push(dataset);
+      }
+
+      else {
+        combineXS = [];
+        combineYS = [];
+        sensorsCount = 0;
+        var combineList = [];
+
+        for (sensorData in plotData) {
+          sensorsCount = sensorsCount + 1;
+          combineXS = combineXS.concat(plotData[sensorData].xs);
+          combineYS = combineYS.concat(plotData[sensorData].ys);
+        }
+        for (iter in combineXS) {
+          combineList.push({'xs': Date(combineXS[iter]), 'ys': combineYS[iter]});
+        } 
+        console.log(combineList);
+        combineList = combineList.sort(function(a, b) {
+          return a.xs.localeCompare(b.xs);
+        });
+        console.log(combineList);
+        for (iter in combineList) {
+          chartData.data.labels.push(combineList[iter]['xs']);
+          dataset.data.push(combineList[iter]['ys']);
+        }
+        dataset.label = 'All ' + sensorsCount + ' Sensors';
+        dataset.borderColor = getRandomColor();
+        chartData.data.datasets.push(dataset);
+      }
+      plotGraph();
+    }
+
+    function processGraph(input) {
+      var idCheck = input[input.selectedIndex].id;
+      flushChartData();
+      graphData(idCheck);
+      //temp = temp.replace(/\\"/g, '"');
+    }
+    graphData("allSensor");
+    </script>
+  </body>
+  <footer class="footer">
+    <div class="container">
+      <span class="text-muted">@Assignment for Sedemac by Rajdeep Mandal</span>
+    </div>
+  </footer>
+</html>

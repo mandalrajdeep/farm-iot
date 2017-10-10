@@ -1,0 +1,20 @@
+{
+  "name": "sensors",
+  "description": "",
+  "main": "",
+  "authors": [
+    "Rajdeep Mandal <rajdeep.mandal@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/lahuang4/nodejs-mysql-starter-kit",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "Chart.Scatter.js": "^1.1.4"
+  }
+}
