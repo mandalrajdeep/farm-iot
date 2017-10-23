@@ -16,5 +16,5 @@ This is an assignment for an interview: a web application for creating a dashboa
 5. `node scripts/dbsetup.js` to set up your database, if it doesn't already exist.
 6. (Optional) To insert some test data in the database, you can run the contents of the file 'sensors_2017-10-10.sql' using the 
 command: 
-mysql -u root -p sensors < sensors_2017-10-10.sql (You can find the password in the config file)
+`mysql -u root -p sensors < sensors_2017-10-10.sql` (You can find the password in the config file)
 7. `npm start` to start up your app! Go to [http://localhost:3000](http://localhost:3000) to see it.
