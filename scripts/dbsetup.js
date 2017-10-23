@@ -21,8 +21,8 @@ conn.query('\
     `farmID` CHAR(36) NOT NULL, \
     `active` BOOLEAN NOT NULL, \
     `farmCount` INT NOT NULL DEFAULT 0, \
-    `notes` VARCHAR(255), \+
-     FOREIGN KEY(`farm`) REFERENCES `users`(`id`) \
+    `notes` VARCHAR(255), \
+     FOREIGN KEY(`farmID`) REFERENCES `users`(`id`) \
   )');
 
 conn.query('\
@@ -34,7 +34,7 @@ conn.query('\
     `moisture` INT UNSIGNED NOT NULL, \
     `notes` VARCHAR(255), \
      PRIMARY KEY (`id`), \
-     FOREIGN KEY(`sensor`) REFERENCES `sensor`(`conn`) \
+     FOREIGN KEY(`sensorID`) REFERENCES `sensor`(`id`) \
   )'); 
 
 
